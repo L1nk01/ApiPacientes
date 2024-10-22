@@ -24,10 +24,16 @@ class PacienteResource extends JsonResource
             'cedula' => $this->cedula,
             'tipo_sangre' => $this->tipo_sangre,
             'telefono' => $this->telefono,
-            'correo' => $this->correo,
+            'correo_electronico' => $this->correo,
             'direccion' => $this->direccion,
-            'created_at' => $this->created_at->format('d-m-Y'),
-            'updated_at' => $this->updated_at->format('d-m-Y')
+            'fecha_creacion' => $this->created_at->format('d-m-Y'),
+            'fecha_modificacion' => $this->updated_at->format('d-m-Y H:m:s')
+        ];
+    }
+
+    public function with(Request $request): array {
+        return [
+            'res' => true,
         ];
     }
 }
