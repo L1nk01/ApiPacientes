@@ -5,10 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Paciente extends Model
+class Paciente extends BaseModel
 {
-    use HasFactory;
-
     protected $fillable = [
         'nombres',
         'apellidos',
@@ -25,9 +23,4 @@ class Paciente extends Model
         'created_at' => 'datetime:d-m-Y H:i:s',
         'updated_at' => 'datetime:d-m-Y H:i:s'
     ];
-
-    // protected $hidden = [
-    //     'created_at',
-    //     'updated_at'
-    // ];
 }
