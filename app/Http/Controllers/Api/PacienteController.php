@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\GuardarPacienteRequest;
 use App\Models\Paciente;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ActualizarPacienteRequest;
 use App\Http\Resources\PacienteResource;
@@ -16,7 +15,7 @@ class PacienteController extends Controller
      */
     public function index()
     {
-        return PacienteResource::collection(Paciente::all());
+        return PacienteResource::collection(Paciente::all())->response()->setStatusCode(202);
     }
 
     /**
@@ -24,11 +23,10 @@ class PacienteController extends Controller
      */
     public function store(GuardarPacienteRequest $request)
     {
-        Paciente::create($request->all());
-        return response()->json([
-            'response' => true,
-            'msg' => 'Paciente guardado correctamente'
-        ], 200);
+        return (new PacienteResource(Paciente::create($request->all())))
+                    ->additional([
+            "msg" => "Paciente guardado correctamente."
+        ]);
     }
 
     /**
@@ -36,10 +34,7 @@ class PacienteController extends Controller
      */
     public function show(Paciente $paciente)
     {
-        return response()->json([
-            'response' => true,
-            'paciente' => $paciente
-        ]);
+        return new PacienteResource($paciente);
     }
 
     /**
@@ -48,10 +43,9 @@ class PacienteController extends Controller
     public function update(ActualizarPacienteRequest $request, Paciente $paciente)
     {
         $paciente->update($request->all());
-        return response([
-            'response' => true,
-            'mensaje' => 'Paciente actualizado correctamente'
-        ], 200);
+        return (new PacienteResource($paciente))->additional([
+            "msg" => "Paciente actualizado correctamente."
+        ]);;
     }
 
     /**
@@ -60,9 +54,8 @@ class PacienteController extends Controller
     public function destroy(Paciente $paciente)
     {
         $paciente->delete();
-        return response([
-            'response' => true,
-            'mensaje' => 'Paciente eliminado correctamente'
-        ], 200);
+        return (new PacienteResource($paciente))->additional([
+            "msg" => "Paciente eliminado correctamente."
+        ]);;
     }
 }
